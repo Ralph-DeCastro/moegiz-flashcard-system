@@ -1,0 +1,1553 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>MoeGiz — Learning Platform</title>
+
+
+    <style>
+
+        /* ==============================
+           RESET
+        ============================== */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        /* ==============================
+           BODY
+        ============================== */
+
+        body {
+
+            min-height: 100vh;
+
+            font-family:
+                Inter,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                sans-serif;
+
+            color: #ffffff;
+
+            background:
+
+                radial-gradient(
+                    circle at 15% 20%,
+                    rgba(6, 182, 212, 0.18),
+                    transparent 30%
+                ),
+
+                radial-gradient(
+                    circle at 85% 75%,
+                    rgba(168, 85, 247, 0.18),
+                    transparent 30%
+                ),
+
+                radial-gradient(
+                    circle at 50% 100%,
+                    rgba(236, 72, 153, 0.12),
+                    transparent 35%
+                ),
+
+                #080b12;
+
+            overflow-x: hidden;
+
+        }
+
+
+        /* ==============================
+           BACKGROUND ORBS
+        ============================== */
+
+        .orb {
+
+            position: fixed;
+
+            border-radius: 50%;
+
+            filter: blur(80px);
+
+            pointer-events: none;
+
+            z-index: 0;
+
+        }
+
+
+        .orb.one {
+
+            width: 280px;
+            height: 280px;
+
+            background:
+                rgba(6, 182, 212, 0.16);
+
+            top: -100px;
+            left: -80px;
+
+            animation:
+                orbMoveOne 8s ease-in-out infinite;
+
+        }
+
+
+        .orb.two {
+
+            width: 320px;
+            height: 320px;
+
+            background:
+                rgba(168, 85, 247, 0.15);
+
+            right: -100px;
+            bottom: -100px;
+
+            animation:
+                orbMoveTwo 10s ease-in-out infinite;
+
+        }
+
+
+        .orb.three {
+
+            width: 200px;
+            height: 200px;
+
+            background:
+                rgba(236, 72, 153, 0.09);
+
+            right: 25%;
+            top: 10%;
+
+            animation:
+                orbMoveThree 7s ease-in-out infinite;
+
+        }
+
+
+        /* ==============================
+           NAVBAR
+        ============================== */
+
+        .navbar {
+
+            position: relative;
+
+            z-index: 10;
+
+            width: 100%;
+
+            padding:
+                20px 6%;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            border-bottom:
+                1px solid
+                rgba(255, 255, 255, 0.08);
+
+            background:
+                rgba(8, 11, 18, 0.45);
+
+            backdrop-filter:
+                blur(20px);
+
+            -webkit-backdrop-filter:
+                blur(20px);
+
+        }
+
+
+        /* ==============================
+           LOGO
+        ============================== */
+
+        .logo {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            text-decoration: none;
+
+            color: #ffffff;
+
+        }
+
+
+        .logo-icon {
+
+            width: 42px;
+            height: 42px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 13px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #06b6d4,
+                    #8b5cf6
+                );
+
+            box-shadow:
+                0 10px 30px
+                rgba(6, 182, 212, 0.20);
+
+            font-size: 18px;
+
+            font-weight: 900;
+
+            animation:
+                logoFloat 3s ease-in-out infinite;
+
+        }
+
+
+        .logo-name {
+
+            font-size: 22px;
+
+            font-weight: 900;
+
+            letter-spacing: -0.8px;
+
+        }
+
+
+        .logo-name span {
+
+            color: #22d3ee;
+
+        }
+
+
+        /* ==============================
+           NAVIGATION
+        ============================== */
+
+        .nav-links {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 28px;
+
+        }
+
+
+        .nav-link {
+
+            color: #cbd5e1;
+
+            text-decoration: none;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            transition:
+                0.2s ease;
+
+        }
+
+
+        .nav-link:hover {
+
+            color: #ffffff;
+
+        }
+
+
+        /* ==============================
+           EXPLORE
+        ============================== */
+
+        .explore {
+
+            position: relative;
+
+        }
+
+
+        .explore-button {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 6px;
+
+            border: 0;
+
+            background: transparent;
+
+            color: #cbd5e1;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+        }
+
+
+        .explore-button:hover {
+
+            color: #ffffff;
+
+        }
+
+
+        .arrow {
+
+            transition:
+                0.2s ease;
+
+        }
+
+
+        .explore:hover .arrow {
+
+            transform:
+                rotate(180deg);
+
+        }
+
+
+        .explore-menu {
+
+            position: absolute;
+
+            top: 35px;
+
+            left: -30px;
+
+            width: 210px;
+
+            padding: 8px;
+
+            border-radius: 16px;
+
+            background:
+                rgba(15, 23, 42, 0.88);
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.12);
+
+            box-shadow:
+                0 25px 60px
+                rgba(0, 0, 0, 0.45);
+
+            backdrop-filter:
+                blur(24px);
+
+            -webkit-backdrop-filter:
+                blur(24px);
+
+            opacity: 0;
+
+            visibility: hidden;
+
+            transform:
+                translateY(-8px);
+
+            transition:
+                0.2s ease;
+
+        }
+
+
+        .explore:hover .explore-menu {
+
+            opacity: 1;
+
+            visibility: visible;
+
+            transform:
+                translateY(0);
+
+        }
+
+
+        .explore-item {
+
+            display: block;
+
+            padding: 13px;
+
+            border-radius: 11px;
+
+            text-decoration: none;
+
+            color: #cbd5e1;
+
+            transition:
+                0.2s ease;
+
+        }
+
+
+        .explore-item:hover {
+
+            background:
+                rgba(255, 255, 255, 0.08);
+
+            color: #ffffff;
+
+        }
+
+
+        .explore-item strong {
+
+            display: block;
+
+            margin-bottom: 3px;
+
+            font-size: 13px;
+
+        }
+
+
+        .explore-item small {
+
+            color: #64748b;
+
+            font-size: 10px;
+
+        }
+
+
+        /* ==============================
+           LOGIN
+        ============================== */
+
+        .login-button {
+
+            padding:
+                10px 20px;
+
+            border-radius: 10px;
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.14);
+
+            background:
+                rgba(255, 255, 255, 0.07);
+
+            color: #ffffff;
+
+            text-decoration: none;
+
+            font-size: 12px;
+
+            font-weight: 800;
+
+            transition:
+                0.2s ease;
+
+        }
+
+
+        .login-button:hover {
+
+            background:
+                rgba(255, 255, 255, 0.13);
+
+            transform:
+                translateY(-2px);
+
+        }
+
+
+        /* ==============================
+           HERO
+        ============================== */
+
+        .hero {
+
+            position: relative;
+
+            z-index: 2;
+
+            min-height:
+                calc(100vh - 83px);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding:
+                80px 20px;
+
+        }
+
+
+        .hero-content {
+
+            width: 100%;
+
+            max-width: 900px;
+
+            text-align: center;
+
+        }
+
+
+        /* ==============================
+           BADGE
+        ============================== */
+
+        .badge {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            padding:
+                9px 15px;
+
+            margin-bottom: 25px;
+
+            border-radius: 999px;
+
+            background:
+                rgba(255, 255, 255, 0.06);
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.12);
+
+            color: #a5f3fc;
+
+            font-size: 11px;
+
+            font-weight: 800;
+
+            backdrop-filter:
+                blur(15px);
+
+            animation:
+                badgeFloat 3s ease-in-out infinite;
+
+        }
+
+
+        .badge-dot {
+
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: #22d3ee;
+
+            box-shadow:
+                0 0 12px
+                rgba(34, 211, 238, 0.8);
+
+            animation:
+                dotPulse 2s ease-in-out infinite;
+
+        }
+
+
+        /* ==============================
+           HERO TITLE
+        ============================== */
+
+        .hero h1 {
+
+            max-width: 850px;
+
+            margin: auto;
+
+            font-size:
+                clamp(48px, 8vw, 86px);
+
+            line-height:
+                0.98;
+
+            letter-spacing:
+                -4px;
+
+            font-weight:
+                900;
+
+            animation:
+                heroFloat 4s ease-in-out infinite;
+
+        }
+
+
+        /* ==============================
+           MOVING MOEGIZ GRADIENT
+        ============================== */
+
+        .hero h1 span {
+
+            display: inline-block;
+
+            background:
+
+                linear-gradient(
+                    90deg,
+                    #22d3ee,
+                    #a78bfa,
+                    #f0abfc,
+                    #22d3ee,
+                    #a78bfa
+                );
+
+            background-size:
+                300% 100%;
+
+            -webkit-background-clip:
+                text;
+
+            -webkit-text-fill-color:
+                transparent;
+
+            background-clip:
+                text;
+
+            animation:
+                gradientMove 4s linear infinite;
+
+        }
+
+
+        /* ==============================
+           DESCRIPTION
+        ============================== */
+
+        .hero-description {
+
+            max-width: 600px;
+
+            margin:
+                28px auto 0;
+
+            color: #94a3b8;
+
+            font-size: 16px;
+
+            line-height: 1.7;
+
+            animation:
+                descriptionFloat 4s ease-in-out infinite;
+
+        }
+
+
+        /* ==============================
+           BUTTONS
+        ============================== */
+
+        .hero-buttons {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 12px;
+
+            margin-top: 35px;
+
+        }
+
+
+        .primary-button {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding:
+                15px 25px;
+
+            border-radius: 13px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #06b6d4,
+                    #8b5cf6
+                );
+
+            color: #ffffff;
+
+            text-decoration: none;
+
+            font-size: 13px;
+
+            font-weight: 800;
+
+            box-shadow:
+                0 15px 35px
+                rgba(6, 182, 212, 0.16);
+
+            transition:
+                0.2s ease;
+
+        }
+
+
+        .primary-button:hover {
+
+            transform:
+                translateY(-3px);
+
+            filter:
+                brightness(1.08);
+
+        }
+
+
+        .secondary-button {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding:
+                14px 24px;
+
+            border-radius: 13px;
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.13);
+
+            background:
+                rgba(255, 255, 255, 0.05);
+
+            color: #cbd5e1;
+
+            text-decoration: none;
+
+            font-size: 13px;
+
+            font-weight: 800;
+
+            backdrop-filter:
+                blur(15px);
+
+            transition:
+                0.2s ease;
+
+        }
+
+
+        .secondary-button:hover {
+
+            color: #ffffff;
+
+            background:
+                rgba(255, 255, 255, 0.09);
+
+            transform:
+                translateY(-3px);
+
+        }
+
+
+        /* ==============================
+           FEATURES
+        ============================== */
+
+        .features {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 15px;
+
+            max-width: 850px;
+
+            margin:
+                70px auto 0;
+
+        }
+
+
+        .feature-card {
+
+            padding: 22px;
+
+            text-align: left;
+
+            border-radius: 18px;
+
+            background:
+                rgba(255, 255, 255, 0.055);
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.10);
+
+            backdrop-filter:
+                blur(20px);
+
+            -webkit-backdrop-filter:
+                blur(20px);
+
+            box-shadow:
+                0 20px 50px
+                rgba(0, 0, 0, 0.20);
+
+            transition:
+                0.25s ease;
+
+        }
+
+
+        .feature-card:hover {
+
+            transform:
+                translateY(-6px);
+
+            background:
+                rgba(255, 255, 255, 0.08);
+
+            border-color:
+                rgba(255, 255, 255, 0.16);
+
+        }
+
+
+        .feature-icon {
+
+            width: 38px;
+            height: 38px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            margin-bottom: 15px;
+
+            border-radius: 11px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(6, 182, 212, 0.20),
+                    rgba(139, 92, 246, 0.20)
+                );
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.10);
+
+        }
+
+
+        .feature-card h3 {
+
+            margin-bottom: 7px;
+
+            font-size: 14px;
+
+        }
+
+
+        .feature-card p {
+
+            color: #64748b;
+
+            font-size: 11px;
+
+            line-height: 1.6;
+
+        }
+
+
+        /* ==============================
+           FOOTER
+        ============================== */
+
+        .footer {
+
+            position: relative;
+
+            z-index: 2;
+
+            padding:
+                25px;
+
+            text-align: center;
+
+            color: #475569;
+
+            font-size: 10px;
+
+            border-top:
+                1px solid
+                rgba(255, 255, 255, 0.06);
+
+        }
+
+
+        .footer strong {
+
+            color: #94a3b8;
+
+        }
+
+
+        /* ==============================
+           ANIMATIONS
+        ============================== */
+
+        @keyframes heroFloat {
+
+            0% {
+                transform:
+                    translateY(0px);
+            }
+
+            50% {
+                transform:
+                    translateY(-10px);
+            }
+
+            100% {
+                transform:
+                    translateY(0px);
+            }
+
+        }
+
+
+        @keyframes gradientMove {
+
+            0% {
+                background-position:
+                    0% 50%;
+            }
+
+            50% {
+                background-position:
+                    100% 50%;
+            }
+
+            100% {
+                background-position:
+                    0% 50%;
+            }
+
+        }
+
+
+        @keyframes descriptionFloat {
+
+            0% {
+                transform:
+                    translateY(0px);
+            }
+
+            50% {
+                transform:
+                    translateY(-4px);
+            }
+
+            100% {
+                transform:
+                    translateY(0px);
+            }
+
+        }
+
+
+        @keyframes badgeFloat {
+
+            0% {
+                transform:
+                    translateY(0px);
+            }
+
+            50% {
+                transform:
+                    translateY(-5px);
+            }
+
+            100% {
+                transform:
+                    translateY(0px);
+            }
+
+        }
+
+
+        @keyframes dotPulse {
+
+            0% {
+                transform:
+                    scale(1);
+
+                opacity: 1;
+            }
+
+            50% {
+                transform:
+                    scale(1.4);
+
+                opacity: 0.6;
+            }
+
+            100% {
+                transform:
+                    scale(1);
+
+                opacity: 1;
+            }
+
+        }
+
+
+        @keyframes logoFloat {
+
+            0% {
+                transform:
+                    translateY(0px)
+                    rotate(0deg);
+            }
+
+            50% {
+                transform:
+                    translateY(-4px)
+                    rotate(3deg);
+            }
+
+            100% {
+                transform:
+                    translateY(0px)
+                    rotate(0deg);
+            }
+
+        }
+
+
+        @keyframes orbMoveOne {
+
+            0% {
+                transform:
+                    translate(0, 0);
+            }
+
+            50% {
+                transform:
+                    translate(50px, 30px);
+            }
+
+            100% {
+                transform:
+                    translate(0, 0);
+            }
+
+        }
+
+
+        @keyframes orbMoveTwo {
+
+            0% {
+                transform:
+                    translate(0, 0);
+            }
+
+            50% {
+                transform:
+                    translate(-50px, -40px);
+            }
+
+            100% {
+                transform:
+                    translate(0, 0);
+            }
+
+        }
+
+
+        @keyframes orbMoveThree {
+
+            0% {
+                transform:
+                    translate(0, 0);
+            }
+
+            50% {
+                transform:
+                    translate(-30px, 40px);
+            }
+
+            100% {
+                transform:
+                    translate(0, 0);
+            }
+
+        }
+
+
+        /* ==============================
+           MOBILE
+        ============================== */
+
+        @media (max-width: 760px) {
+
+            .navbar {
+
+                padding:
+                    16px 20px;
+
+            }
+
+
+            .nav-links {
+
+                gap: 12px;
+
+            }
+
+
+            .nav-link {
+
+                display: none;
+
+            }
+
+
+            .explore-menu {
+
+                left: auto;
+
+                right: 0;
+
+            }
+
+
+            .login-button {
+
+                padding:
+                    9px 14px;
+
+            }
+
+
+            .hero {
+
+                padding:
+                    60px 18px;
+
+            }
+
+
+            .hero h1 {
+
+                font-size:
+                    clamp(42px, 13vw, 65px);
+
+                letter-spacing:
+                    -2.5px;
+
+            }
+
+
+            .hero-description {
+
+                font-size: 14px;
+
+            }
+
+
+            .hero-buttons {
+
+                flex-direction:
+                    column;
+
+            }
+
+
+            .primary-button,
+            .secondary-button {
+
+                width: 220px;
+
+            }
+
+
+            .features {
+
+                grid-template-columns:
+                    1fr;
+
+                max-width:
+                    400px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- BACKGROUND -->
+
+    <div class="orb one"></div>
+
+    <div class="orb two"></div>
+
+    <div class="orb three"></div>
+
+
+    <!-- NAVBAR -->
+
+    <header class="navbar">
+
+
+        <!-- MOEGIZ LOGO -->
+
+        <a
+            href="homepage.html"
+            class="logo"
+        >
+
+            <div class="logo-icon">
+                M
+            </div>
+
+            <div class="logo-name">
+                Moe<span>Giz</span>
+            </div>
+
+        </a>
+
+
+        <!-- NAVIGATION -->
+
+        <nav class="nav-links">
+
+
+            <!-- HOME -->
+
+            <a
+                href="homepage.html"
+                class="nav-link"
+            >
+                Home
+            </a>
+
+
+            <!-- EXPLORE -->
+
+            <div class="explore">
+
+                <button
+                    class="explore-button"
+                    type="button"
+                >
+
+                    Explore
+
+                    <span class="arrow">
+                        ▼
+                    </span>
+
+                </button>
+
+
+                <div class="explore-menu">
+
+
+                    <!-- FLASHCARD MAKER -->
+
+                    <a
+                        href="flashcard-maker.html"
+                        class="explore-item"
+                    >
+
+                        <strong>
+                            Flashcard Maker
+                        </strong>
+
+                        <small>
+                            Create and study flashcards
+                        </small>
+
+                    </a>
+
+
+                    <!-- QUIZLET -->
+
+                    <a
+                        href="quizlet.html"
+                        class="explore-item"
+                    >
+
+                        <strong>
+                            Quizlet
+                        </strong>
+
+                        <small>
+                            Practice with quizzes
+                        </small>
+
+                    </a>
+
+
+                </div>
+
+            </div>
+
+
+            <!-- LOGIN -->
+
+            <a
+                href="account.html"
+                class="login-button"
+            >
+                Login
+            </a>
+
+
+        </nav>
+
+    </header>
+
+
+    <!-- HERO -->
+
+    <main class="hero">
+
+
+        <div class="hero-content">
+
+
+            <!-- BADGE -->
+
+            <div class="badge">
+
+                <span class="badge-dot"></span>
+
+                Smart learning made simple
+
+            </div>
+
+
+            <!-- MOVING TITLE -->
+
+            <h1>
+
+                Learn smarter with
+
+                <span>
+                    MoeGiz
+                </span>
+
+            </h1>
+
+
+            <!-- DESCRIPTION -->
+
+            <p class="hero-description">
+
+                Create flashcards, practice quizzes,
+                and build your knowledge with a
+                simple and modern learning experience.
+
+            </p>
+
+
+            <!-- BUTTONS -->
+
+            <div class="hero-buttons">
+
+
+                <!-- START LEARNING -->
+
+                <a
+                    href="account.html"
+                    class="primary-button"
+                >
+
+                    Start Learning
+
+                </a>
+
+
+                <!-- FLASHCARD MAKER -->
+
+                <a
+                    href="flashcard-maker.html"
+                    class="secondary-button"
+                >
+
+                    Make Flashcards
+
+                </a>
+
+
+            </div>
+
+
+            <!-- FEATURES -->
+
+            <section class="features">
+
+
+                <!-- FLASHCARD -->
+
+                <div class="feature-card">
+
+
+                    <div class="feature-icon">
+                        ✦
+                    </div>
+
+
+                    <h3>
+                        Flashcard Maker
+                    </h3>
+
+
+                    <p>
+
+                        Create your own flashcards
+                        and review important topics
+                        anytime.
+
+                    </p>
+
+
+                </div>
+
+
+                <!-- QUIZLET -->
+
+                <div class="feature-card">
+
+
+                    <div class="feature-icon">
+                        ?
+                    </div>
+
+
+                    <h3>
+                        Quizlet
+                    </h3>
+
+
+                    <p>
+
+                        Practice what you know with
+                        interactive quizzes and
+                        questions.
+
+                    </p>
+
+
+                </div>
+
+
+                <!-- TRACK -->
+
+                <div class="feature-card">
+
+
+                    <div class="feature-icon">
+                        ✓
+                    </div>
+
+
+                    <h3>
+                        Track Your Learning
+                    </h3>
+
+
+                    <p>
+
+                        Keep your learning organized
+                        and continue improving your
+                        knowledge.
+
+                    </p>
+
+
+                </div>
+
+
+            </section>
+
+
+        </div>
+
+    </main>
+
+
+    <!-- FOOTER -->
+
+    <footer class="footer">
+
+        <strong>
+            MoeGiz
+        </strong>
+
+        &nbsp; • &nbsp;
+
+        Learn. Practice. Improve.
+
+    </footer>
+
+
+</body>
+
+</html>

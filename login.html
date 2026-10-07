@@ -1,0 +1,1376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Finance Economics — Account</title>
+
+    <style>
+        /* =====================================================
+           RESET
+        ===================================================== */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        /* =====================================================
+           PAGE
+        ===================================================== */
+
+        body {
+            min-height: 100vh;
+
+            font-family:
+                Inter,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                sans-serif;
+
+            color: #ffffff;
+
+            background:
+                radial-gradient(
+                    circle at 15% 20%,
+                    rgba(0, 212, 255, 0.18),
+                    transparent 30%
+                ),
+                radial-gradient(
+                    circle at 85% 75%,
+                    rgba(168, 85, 247, 0.18),
+                    transparent 30%
+                ),
+                radial-gradient(
+                    circle at 50% 100%,
+                    rgba(236, 72, 153, 0.12),
+                    transparent 35%
+                ),
+                #080b12;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 30px 20px;
+
+            overflow-x: hidden;
+        }
+
+
+        /* =====================================================
+           BACKGROUND BLOBS
+        ===================================================== */
+
+        .orb {
+            position: fixed;
+
+            border-radius: 50%;
+
+            filter: blur(80px);
+
+            pointer-events: none;
+
+            z-index: 0;
+        }
+
+        .orb.one {
+            width: 260px;
+            height: 260px;
+
+            background: rgba(6, 182, 212, 0.16);
+
+            top: -80px;
+            left: -70px;
+        }
+
+        .orb.two {
+            width: 300px;
+            height: 300px;
+
+            background: rgba(168, 85, 247, 0.14);
+
+            right: -100px;
+            bottom: -80px;
+        }
+
+        .orb.three {
+            width: 180px;
+            height: 180px;
+
+            background: rgba(236, 72, 153, 0.09);
+
+            right: 25%;
+            top: 10%;
+        }
+
+
+        /* =====================================================
+           AUTH CONTAINER
+        ===================================================== */
+
+        .auth-wrapper {
+            position: relative;
+
+            z-index: 2;
+
+            width: 100%;
+            max-width: 470px;
+        }
+
+
+        /* =====================================================
+           GLASS CARD
+        ===================================================== */
+
+        .glass-card {
+            width: 100%;
+
+            padding: 38px;
+
+            border-radius: 26px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(255, 255, 255, 0.095),
+                    rgba(255, 255, 255, 0.035)
+                );
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.14);
+
+            box-shadow:
+                0 30px 80px
+                rgba(0, 0, 0, 0.45),
+
+                inset 0 1px 0
+                rgba(255, 255, 255, 0.08);
+
+            backdrop-filter: blur(24px);
+
+            -webkit-backdrop-filter: blur(24px);
+        }
+
+
+        /* =====================================================
+           BACK HOME
+        ===================================================== */
+
+        .back-home {
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            margin-bottom: 28px;
+
+            color: #94a3b8;
+
+            text-decoration: none;
+
+            font-size: 13px;
+
+            font-weight: 600;
+
+            transition: 0.2s ease;
+        }
+
+        .back-home:hover {
+            color: #ffffff;
+
+            transform: translateX(-3px);
+        }
+
+
+        /* =====================================================
+           HEADER
+        ===================================================== */
+
+        .header {
+            text-align: center;
+
+            margin-bottom: 28px;
+        }
+
+        .logo-mark {
+            width: 52px;
+            height: 52px;
+
+            margin: 0 auto 17px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 16px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #06b6d4,
+                    #8b5cf6
+                );
+
+            box-shadow:
+                0 10px 35px
+                rgba(6, 182, 212, 0.2);
+
+            font-size: 21px;
+            font-weight: 900;
+        }
+
+        .header h1 {
+            font-size: 27px;
+
+            font-weight: 800;
+
+            letter-spacing: -0.7px;
+
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: #94a3b8;
+
+            font-size: 13px;
+
+            line-height: 1.5;
+        }
+
+
+        /* =====================================================
+           TABS
+        ===================================================== */
+
+        .tabs {
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 5px;
+
+            padding: 5px;
+
+            margin-bottom: 25px;
+
+            border-radius: 13px;
+
+            background:
+                rgba(0, 0, 0, 0.20);
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.07);
+        }
+
+        .tab {
+            height: 42px;
+
+            border: 0;
+
+            border-radius: 9px;
+
+            background: transparent;
+
+            color: #718096;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition: 0.2s ease;
+        }
+
+        .tab:hover {
+            color: #ffffff;
+        }
+
+        .tab.active {
+            color: #ffffff;
+
+            background:
+                rgba(255, 255, 255, 0.10);
+
+            box-shadow:
+                0 4px 15px
+                rgba(0, 0, 0, 0.18);
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.08);
+        }
+
+
+        /* =====================================================
+           FORM
+        ===================================================== */
+
+        .form {
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 16px;
+        }
+
+        .field {
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 7px;
+        }
+
+        .field label {
+            color: #cbd5e1;
+
+            font-size: 12px;
+
+            font-weight: 700;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input {
+            width: 100%;
+
+            height: 49px;
+
+            padding:
+                0 14px;
+
+            border-radius: 11px;
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.11);
+
+            outline: none;
+
+            background:
+                rgba(255, 255, 255, 0.055);
+
+            color: #ffffff;
+
+            font-size: 13px;
+
+            transition: 0.2s ease;
+        }
+
+        .input::placeholder {
+            color: #64748b;
+        }
+
+        .input:focus {
+            border-color:
+                rgba(34, 211, 238, 0.65);
+
+            background:
+                rgba(255, 255, 255, 0.075);
+
+            box-shadow:
+                0 0 0 3px
+                rgba(34, 211, 238, 0.08);
+        }
+
+        .password-input {
+            padding-right: 65px;
+        }
+
+        .show-password {
+            position: absolute;
+
+            right: 12px;
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            border: 0;
+
+            background: transparent;
+
+            color: #64748b;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+        .show-password:hover {
+            color: #ffffff;
+        }
+
+
+        /* =====================================================
+           CHECKBOX / FORGOT
+        ===================================================== */
+
+        .form-options {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            margin-top: -2px;
+        }
+
+        .remember {
+            display: flex;
+
+            align-items: center;
+
+            gap: 7px;
+
+            color: #94a3b8;
+
+            font-size: 11px;
+        }
+
+        .remember input {
+            accent-color: #06b6d4;
+        }
+
+        .forgot {
+            border: 0;
+
+            background: transparent;
+
+            color: #22d3ee;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+
+        /* =====================================================
+           SUBMIT BUTTON
+        ===================================================== */
+
+        .submit-btn {
+            width: 100%;
+
+            height: 50px;
+
+            margin-top: 3px;
+
+            border: 0;
+
+            border-radius: 12px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #06b6d4,
+                    #8b5cf6
+                );
+
+            color: white;
+
+            font-size: 13px;
+
+            font-weight: 800;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 10px 30px
+                rgba(6, 182, 212, 0.13);
+
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease,
+                filter 0.2s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+
+            filter: brightness(1.08);
+
+            box-shadow:
+                0 15px 35px
+                rgba(6, 182, 212, 0.20);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+
+        /* =====================================================
+           MESSAGE
+        ===================================================== */
+
+        .message {
+            display: none;
+
+            padding: 11px 13px;
+
+            border-radius: 10px;
+
+            font-size: 12px;
+
+            line-height: 1.4;
+
+            font-weight: 600;
+        }
+
+        .message.show {
+            display: block;
+        }
+
+        .message.error {
+            color: #fda4af;
+
+            background:
+                rgba(244, 63, 94, 0.10);
+
+            border:
+                1px solid
+                rgba(244, 63, 94, 0.20);
+        }
+
+        .message.success {
+            color: #6ee7b7;
+
+            background:
+                rgba(16, 185, 129, 0.10);
+
+            border:
+                1px solid
+                rgba(16, 185, 129, 0.20);
+        }
+
+
+        /* =====================================================
+           BOTTOM
+        ===================================================== */
+
+        .bottom-text {
+            text-align: center;
+
+            margin-top: 23px;
+
+            color: #64748b;
+
+            font-size: 11px;
+
+            line-height: 1.5;
+        }
+
+        .bottom-text strong {
+            color: #94a3b8;
+        }
+
+
+        /* =====================================================
+           SIGNUP ONLY FIELDS
+        ===================================================== */
+
+        .signup-only {
+            display: none;
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media (max-width: 540px) {
+
+            body {
+                padding: 18px 14px;
+            }
+
+            .glass-card {
+                padding: 27px 21px;
+
+                border-radius: 22px;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .back-home {
+                margin-bottom: 23px;
+            }
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+    <!-- Background decoration -->
+
+    <div class="orb one"></div>
+    <div class="orb two"></div>
+    <div class="orb three"></div>
+
+
+    <main class="auth-wrapper">
+
+        <section class="glass-card">
+
+
+            <!-- Back to homepage -->
+
+            <a
+                href="homepage.html"
+                class="back-home"
+            >
+                ← Back to Homepage
+            </a>
+
+
+            <!-- Header -->
+
+            <div class="header">
+
+                <div class="logo-mark">
+                    $
+                </div>
+
+                <h1 id="pageTitle">
+                    Welcome back
+                </h1>
+
+                <p id="pageSubtitle">
+                    Sign in to continue your learning journey.
+                </p>
+
+            </div>
+
+
+            <!-- Tabs -->
+
+            <div class="tabs">
+
+                <button
+                    type="button"
+                    id="loginTab"
+                    class="tab active"
+                >
+                    Sign In
+                </button>
+
+                <button
+                    type="button"
+                    id="signupTab"
+                    class="tab"
+                >
+                    Create Account
+                </button>
+
+            </div>
+
+
+            <!-- Form -->
+
+            <form
+                class="form"
+                id="authForm"
+                autocomplete="on"
+            >
+
+
+                <!-- Name -->
+
+                <div
+                    class="field signup-only"
+                    id="nameGroup"
+                >
+
+                    <label for="name">
+                        Full Name
+                    </label>
+
+                    <input
+                        class="input"
+                        id="name"
+                        type="text"
+                        placeholder="Enter your full name"
+                        autocomplete="name"
+                    >
+
+                </div>
+
+
+                <!-- Email -->
+
+                <div class="field">
+
+                    <label for="email">
+                        Email Address
+                    </label>
+
+                    <input
+                        class="input"
+                        id="email"
+                        type="email"
+                        placeholder="you@example.com"
+                        autocomplete="email"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- Password -->
+
+                <div class="field">
+
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <input
+                            class="input password-input"
+                            id="password"
+                            type="password"
+                            placeholder="Enter your password"
+                            autocomplete="current-password"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            class="show-password"
+                            id="passwordToggle"
+                        >
+                            Show
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Confirm password -->
+
+                <div
+                    class="field signup-only"
+                    id="confirmGroup"
+                >
+
+                    <label for="confirmPassword">
+                        Confirm Password
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <input
+                            class="input password-input"
+                            id="confirmPassword"
+                            type="password"
+                            placeholder="Confirm your password"
+                            autocomplete="new-password"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- Login options -->
+
+                <div
+                    class="form-options"
+                    id="loginOptions"
+                >
+
+                    <label class="remember">
+
+                        <input
+                            type="checkbox"
+                            id="remember"
+                        >
+
+                        Remember me
+
+                    </label>
+
+                    <button
+                        type="button"
+                        class="forgot"
+                        id="forgotButton"
+                    >
+                        Forgot password?
+                    </button>
+
+                </div>
+
+
+                <!-- Message -->
+
+                <div
+                    class="message"
+                    id="message"
+                ></div>
+
+
+                <!-- Submit -->
+
+                <button
+                    type="submit"
+                    class="submit-btn"
+                    id="submitButton"
+                >
+                    Sign In
+                </button>
+
+            </form>
+
+
+            <div class="bottom-text">
+
+                <strong>Finance Economics</strong>
+
+                <br>
+
+                Your learning progress starts here.
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <script>
+
+        /* =====================================================
+           MODE
+        ===================================================== */
+
+        let currentMode = "login";
+
+
+        /* =====================================================
+           ELEMENTS
+        ===================================================== */
+
+        const form =
+            document.getElementById("authForm");
+
+        const loginTab =
+            document.getElementById("loginTab");
+
+        const signupTab =
+            document.getElementById("signupTab");
+
+        const pageTitle =
+            document.getElementById("pageTitle");
+
+        const pageSubtitle =
+            document.getElementById("pageSubtitle");
+
+        const submitButton =
+            document.getElementById("submitButton");
+
+        const nameGroup =
+            document.getElementById("nameGroup");
+
+        const confirmGroup =
+            document.getElementById("confirmGroup");
+
+        const loginOptions =
+            document.getElementById("loginOptions");
+
+        const password =
+            document.getElementById("password");
+
+        const passwordToggle =
+            document.getElementById("passwordToggle");
+
+        const message =
+            document.getElementById("message");
+
+
+        /* =====================================================
+           MESSAGE
+        ===================================================== */
+
+        function showMessage(text, type) {
+
+            message.textContent = text;
+
+            message.className =
+                "message show " + type;
+
+        }
+
+
+        function clearMessage() {
+
+            message.textContent = "";
+
+            message.className =
+                "message";
+
+        }
+
+
+        /* =====================================================
+           LOGIN MODE
+        ===================================================== */
+
+        function setLoginMode() {
+
+            currentMode = "login";
+
+            clearMessage();
+
+            loginTab.classList.add("active");
+
+            signupTab.classList.remove("active");
+
+            pageTitle.textContent =
+                "Welcome back";
+
+            pageSubtitle.textContent =
+                "Sign in to continue your learning journey.";
+
+            nameGroup.style.display =
+                "none";
+
+            confirmGroup.style.display =
+                "none";
+
+            loginOptions.style.display =
+                "flex";
+
+            submitButton.textContent =
+                "Sign In";
+
+            password.setAttribute(
+                "autocomplete",
+                "current-password"
+            );
+
+        }
+
+
+        /* =====================================================
+           CREATE ACCOUNT MODE
+        ===================================================== */
+
+        function setSignupMode() {
+
+            currentMode = "signup";
+
+            clearMessage();
+
+            loginTab.classList.remove("active");
+
+            signupTab.classList.add("active");
+
+            pageTitle.textContent =
+                "Create your account";
+
+            pageSubtitle.textContent =
+                "Create an account to save your learning progress.";
+
+            nameGroup.style.display =
+                "flex";
+
+            confirmGroup.style.display =
+                "flex";
+
+            loginOptions.style.display =
+                "none";
+
+            submitButton.textContent =
+                "Create Account";
+
+            password.setAttribute(
+                "autocomplete",
+                "new-password"
+            );
+
+        }
+
+
+        loginTab.addEventListener(
+            "click",
+            setLoginMode
+        );
+
+
+        signupTab.addEventListener(
+            "click",
+            setSignupMode
+        );
+
+
+        /* =====================================================
+           SHOW / HIDE PASSWORD
+        ===================================================== */
+
+        passwordToggle.addEventListener(
+            "click",
+            function() {
+
+                if (
+                    password.type ===
+                    "password"
+                ) {
+
+                    password.type =
+                        "text";
+
+                    passwordToggle.textContent =
+                        "Hide";
+
+                } else {
+
+                    password.type =
+                        "password";
+
+                    passwordToggle.textContent =
+                        "Show";
+
+                }
+
+            }
+        );
+
+
+        /* =====================================================
+           FORM SUBMISSION
+        ===================================================== */
+
+        form.addEventListener(
+            "submit",
+            function(event) {
+
+                event.preventDefault();
+
+                clearMessage();
+
+
+                const name =
+                    document
+                        .getElementById("name")
+                        .value
+                        .trim();
+
+                const email =
+                    document
+                        .getElementById("email")
+                        .value
+                        .trim()
+                        .toLowerCase();
+
+                const passwordValue =
+                    password.value;
+
+                const confirmPassword =
+                    document
+                        .getElementById(
+                            "confirmPassword"
+                        )
+                        .value;
+
+
+                /* ==============================
+                   BASIC VALIDATION
+                ============================== */
+
+                if (!email) {
+
+                    showMessage(
+                        "Please enter your email address.",
+                        "error"
+                    );
+
+                    return;
+
+                }
+
+
+                if (
+                    !email.includes("@") ||
+                    !email.includes(".")
+                ) {
+
+                    showMessage(
+                        "Please enter a valid email address.",
+                        "error"
+                    );
+
+                    return;
+
+                }
+
+
+                if (
+                    passwordValue.length < 6
+                ) {
+
+                    showMessage(
+                        "Your password must contain at least 6 characters.",
+                        "error"
+                    );
+
+                    return;
+
+                }
+
+
+                /* ==============================
+                   CREATE ACCOUNT
+                ============================== */
+
+                if (
+                    currentMode ===
+                    "signup"
+                ) {
+
+                    if (!name) {
+
+                        showMessage(
+                            "Please enter your full name.",
+                            "error"
+                        );
+
+                        return;
+
+                    }
+
+
+                    if (
+                        passwordValue !==
+                        confirmPassword
+                    ) {
+
+                        showMessage(
+                            "The passwords do not match.",
+                            "error"
+                        );
+
+                        return;
+
+                    }
+
+
+                    const existingUser =
+                        localStorage.getItem(
+                            "financeEconomicsUser"
+                        );
+
+
+                    if (existingUser) {
+
+                        const savedUser =
+                            JSON.parse(
+                                existingUser
+                            );
+
+                        if (
+                            savedUser.email ===
+                            email
+                        ) {
+
+                            showMessage(
+                                "An account with this email already exists. Please sign in.",
+                                "error"
+                            );
+
+                            return;
+
+                        }
+
+                    }
+
+
+                    const user = {
+
+                        name: name,
+
+                        email: email,
+
+                        password: passwordValue
+
+                    };
+
+
+                    localStorage.setItem(
+                        "financeEconomicsUser",
+                        JSON.stringify(user)
+                    );
+
+
+                    showMessage(
+                        "Account created successfully. You can now sign in.",
+                        "success"
+                    );
+
+
+                    setTimeout(
+                        function() {
+
+                            setLoginMode();
+
+                            document
+                                .getElementById("email")
+                                .value =
+                                email;
+
+                            password.value =
+                                "";
+
+                        },
+                        1200
+                    );
+
+
+                    return;
+
+                }
+
+
+                /* ==============================
+                   SIGN IN
+                ============================== */
+
+                const storedUser =
+                    localStorage.getItem(
+                        "financeEconomicsUser"
+                    );
+
+
+                if (!storedUser) {
+
+                    showMessage(
+                        "No account found. Please create an account first.",
+                        "error"
+                    );
+
+                    return;
+
+                }
+
+
+                const user =
+                    JSON.parse(
+                        storedUser
+                    );
+
+
+                if (
+                    user.email !==
+                    email ||
+                    user.password !==
+                    passwordValue
+                ) {
+
+                    showMessage(
+                        "Incorrect email or password.",
+                        "error"
+                    );
+
+                    return;
+
+                }
+
+
+                /* ==============================
+                   SUCCESS
+                ============================== */
+
+                localStorage.setItem(
+                    "financeEconomicsLoggedIn",
+                    "true"
+                );
+
+
+                showMessage(
+                    "Signed in successfully. Redirecting...",
+                    "success"
+                );
+
+
+                setTimeout(
+                    function() {
+
+                        window.location.href =
+                            "index.html";
+
+                    },
+                    800
+                );
+
+            }
+        );
+
+
+        /* =====================================================
+           FORGOT PASSWORD
+        ===================================================== */
+
+        document
+            .getElementById("forgotButton")
+            .addEventListener(
+                "click",
+                function() {
+
+                    const email =
+                        document
+                            .getElementById("email")
+                            .value
+                            .trim();
+
+
+                    if (!email) {
+
+                        showMessage(
+                            "Enter your email address first.",
+                            "error"
+                        );
+
+                        return;
+
+                    }
+
+
+                    showMessage(
+                        "Password recovery would be connected to your email service.",
+                        "success"
+                    );
+
+                }
+            );
+
+
+        /* =====================================================
+           INITIAL STATE
+        ===================================================== */
+
+        setLoginMode();
+
+    </script>
+
+</body>
+</html>
