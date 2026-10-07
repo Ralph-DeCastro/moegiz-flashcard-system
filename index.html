@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moegiz Flashcard & Quiz Arena</title>
+    <!-- Google Fonts & Tailwind CSS for premium typography and layout architecture -->
+    <link href="https://googleapis.com" rel="stylesheet">
+    <script src="https://tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: radial-gradient(circle at 50% 50%, #0d0f14 0%, #030406 100%);
+            overflow-x: hidden;
+        }
+
+        /* Glassmorphism Configuration Base Panels */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Neon Glow Multi-Color Systems */
+        .glow-magenta { box-shadow: 0 0 25px rgba(236, 72, 153, 0.25); border-color: rgba(236, 72, 153, 0.4); }
+        .glow-cyan { box-shadow: 0 0 25px rgba(6, 182, 212, 0.25); border-color: rgba(6, 182, 212, 0.4); }
+        .glow-lime { box-shadow: 0 0 25px rgba(132, 204, 22, 0.25); border-color: rgba(132, 204, 22, 0.4); }
+        .glow-purple { box-shadow: 0 0 25px rgba(168, 85, 247, 0.25); border-color: rgba(168, 85, 247, 0.4); }
+        .glow-amber { box-shadow: 0 0 25px rgba(245, 158, 11, 0.25); border-color: rgba(245, 158, 11, 0.4); }
+
+        /* Quiz Choices Interactive Hover Overdrive Matrix */
+        .quiz-choice {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .quiz-choice:hover {
+            transform: scale(1.06);
+            background: rgba(255, 255, 255, 0.08);
+            color: #ffffff;
+            box-shadow: 0 0 35px var(--hover-glow-color, #ec4899), inset 0 0 12px rgba(255, 255, 255, 0.2);
+            border-color: var(--hover-border-color, #ec4899);
+        }
+
+        /* 3D Flashcard Kinematic Flipping Structure */
+        .flashcard-container {
+            perspective: 1000px;
+        }
+        .flashcard-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+        .flashcard-container.flipped .flashcard-inner {
+            transform: rotateY(180deg);
+        }
+        .flashcard-front, .flashcard-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+        }
+        .flashcard-back {
+            transform: rotateY(180deg);
+        }
+    </style>
+</head>
+<body class="text-slate-200 min-h-screen p-4 md:p-8">
+
+    <!-- Header Panel Mapping `subjects` -->
+    <header class="max-w-7xl mx-auto mb-8 flex flex-col sm:flex-row justify-between items-center gap-4 glass-panel p-6 rounded-2xl glow-purple">
+        <div class="flex items-center gap-3">
+            <span class="text-3xl font-extrabold tracking-wider bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 bg-clip-text text-transparent">MOEGIZ_DB ARENA</span>
+            <span class="text-xs font-semibold px-2.5 py-1 bg-purple-500/20 text-purple-300 border border-purple-500/30 rounded-full uppercase tracking-widest">v5.2.1 Schema</span>
+        </div>
+        
+        <div class="flex flex-wrap items-center gap-4">
+            <!-- Subject Selector Grid -->
+            <div class="flex flex-col">
+                <label class="text-[10px] uppercase font-bold tracking-widest text-slate-400 mb-1">Knowledge Domain (`subjects`)</label>
+                <select id="domainSelect" onchange="handleDomainChange()" class="bg-slate-900/80 border border-slate-700 rounded-xl px-3 py-1.5 text-sm font-semibold focus:outline-none focus:border-pink-500 text-white cursor-pointer">
+                    <option value="cs">Computer Science</option>
+                    <option value="med">Medical Science</option>
+                    <option value="math">Advanced Mathematics</option>
+                </select>
+            </div>
+
+            <!-- Quiz Mode Mapper Enum -->
+            <div class="flex flex-col">
+                <label class="text-[10px] uppercase font-bold tracking-widest text-slate-400 mb-1">Interface Mode</label>
+                <div class="flex bg-slate-900/80 p-1 rounded-xl border border-slate-700">
+                    <button id="modeStandard" onclick="setMode('Standard')" class="px-3 py-1 text-xs font-bold rounded-lg transition-all duration-200 bg-transparent text-slate-400">Standard</button>
+                    <button id="modeGamified" onclick="setMode('Gamified')" class="px-3 py-1 text-xs font-bold rounded-lg transition-all duration-200 bg-gradient-to-r from-pink-500 to-purple-600 text-white shadow-lg shadow-pink-500/20">Gamified</button>
+                </div>
+            </div>
+
+            <!-- Color Multiplier Streak Modifier -->
+            <div class="flex flex-col items-center bg-slate-900/50 px-4 py-1.5 rounded-xl border border-slate-700/60">
+                <span class="text-[10px] uppercase font-bold tracking-widest text-slate-400">Vibrancy Streak</span>
+                <div class="flex items-center gap-2 mt-1">
+                    <button onclick="adjustStreak(-1)" class="text-xs font-extrabold hover:text-pink-400 px-1">-</button>
+                    <span id="streakValue" class="text-sm font-extrabold text-amber-400 animate-pulse">🔥 7 Days</span>
+                    <button onclick="adjustStreak(1)" class="text-xs font-extrabold hover:text-pink-400 px-1">+</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Content Workspace Layout Matrix -->
+    <main class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
+        
+        <!-- Metrics Column Simulator mapping `quiz_attempts` schema row outputs -->
+        <section class="lg:col-span-4 flex flex-col gap-6">
+            <div class="glass-panel p-6 rounded-2xl glow-cyan flex flex-col justify-between relative overflow-hidden group">
+                <div class="absolute -right-10 -bottom-10 w-32 h-32 bg-cyan-500/10 rounded-full blur-2xl group-hover:scale-150 transition-all duration-700"></div>
+                <div>
+                    <span class="text-xs uppercase font-extrabold tracking-widest text-cyan-400">Reward Pool Pool</span>
+                    <h3 id="metricPoints" class="text-4xl font-extrabold mt-2 text-white drop-shadow-[0_0_15px_rgba(6,182,212,0.6)]">2,450 XP</h3>
+                    <p class="text-xs text-slate-400 mt-1">Simulated database field: <code class="text-cyan-300 font-mono text-[11px]">game_points</code></p>
+                </div>
+                <div class="mt-6 pt-4 border-t border-slate-800/80 flex justify-between text-xs">
+                    <div><span class="text-slate-400">Mode:</span> <strong id="lblMode" class="text-slate-200">Gamified</strong></div>
+                    <div><span class="text-slate-400">Role:</span> <strong class="text-cyan-400">Student</strong></div>
+                </div>
+            </div>
+
+            <!-- Quiz Tracking Aggregation -->
+            <div class="glass-panel p-6 rounded-2xl glow-lime flex flex-col justify-between">
+                <div>
+                    <span class="text-xs uppercase font-extrabold tracking-widest text-lime-400">Session Accuracy Tracker</span>
+                    <div class="mt-4 space-y-2">
+                        <div class="flex justify-between items-center text-sm">
+                            <span class="text-slate-400">Quiz Score (`quiz_score`):</span>
+                            <span id="metricScore" class="font-bold text-white text-lg">90%</span>
+                        </div>
+                        <div class="w-full bg-slate-900 rounded-full h-2 overflow-hidden border border-slate-800">
+                            <div id="metricProgressBar" class="bg-gradient-to-r from-lime-400 to-emerald-500 h-2 rounded-full" style="width: 90%"></div>
+                        </div>
+                        <div class="flex justify-between text-[11px] text-slate-400 pt-1">
+                            <span>Correct: <strong id="metricCorrect" class="text-lime-300">9</strong></span>
+                            <span>Total: <strong id="metricTotal" class="text-slate-300">10</strong></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-slate-400 font-mono">
+                    <span>completion_time: <strong id="metricTime" class="text-slate-200">42s</strong></span>
+                    <span>attempt_id: AUTO_INC</span>
+                </div>
+            </div>
+
+            <!-- Active Deck Inventory Rail mapping `decks` -->
+            <div class="glass-panel p-6 rounded-2xl glow-amber flex-1">
+                <span class="text-xs uppercase font-extrabold tracking-widest text-amber-400 block mb-4">Decks List Inventory (`decks`)</span>
+                <div id="deckContainer" class="space-y-3">
+                    <!-- Hydrated via Javascript Module Engine -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Dynamic Study Interface Arena -->
+        <section class="lg:col-span-8 flex flex-col gap-8">
+            
+            <!-- Flashcard Section mapping `flashcards` and positional ordering via `deck_flashcards` -->
+            <div class="glass-panel p-6 rounded-3xl glow-magenta flex flex-col">
